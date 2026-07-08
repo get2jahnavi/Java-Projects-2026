@@ -1,0 +1,110 @@
+import processing.core.*;
+import javax.swing.*;
+public class RunGraphicalGame extends PApplet {
+   GameBoard game;
+   Display display;
+   int clickCounter =0;
+   int startRow, startCol;
+   private boolean alreadyWon;
+   String game_Over;
+
+
+
+
+   public void settings() {
+      size(640, 550);
+   }
+
+
+   public void setup() {
+      // Create a game object
+      game = new GameBoard(5, 5);
+
+
+      // Create the display
+      display = new Display(this, 10, 10, 400, 400);
+      boolean alreadyWon = false;
+
+
+      // You can use images instead if you'd like.
+      display.setImage(1, "001.jpg");
+      display.setImage(2, "002.jpg");
+      display.setImage(3, "003.jpg");
+      display.setImage(4,"004.jpg");
+      display.setImage(5, "005.jpg");
+      display.setImage(6, "006.jpg");
+      display.setImage(7, "007.jpg");
+      display.setImage(8, "008.jpg");
+      display.setImage(9,"009.jpg");
+      display.setImage(10, "010.jpg");
+      display.setImage(11, "011.jpg");
+      display.setImage(12, "012.jpg");
+      display.setImage(13,"013.jpg");
+      display.setImage(14, "014.jpg");
+      display.setImage(15, "015.jpg");
+      display.setImage(16, "016.jpg");
+      display.setImage(17, "017.jpg");
+      display.setImage(18,"018.jpg");
+      display.setImage(19, "019.jpg");
+      display.setImage(20, "020.jpg");
+      display.setImage(21, "021.jpg");
+      display.setImage(22, "022.jpg");
+      display.setImage(23,"023.jpg");
+      display.setImage(24, "024.jpg");
+
+
+
+
+
+
+
+
+
+
+
+
+      display.initializeWithGame(game);
+   }
+
+
+   @Override
+   public void draw() {
+      background(200);
+      display.drawGrid(game.getGrid());
+      //display.setImage();
+      if (game.isGameOver() && !alreadyWon) {
+         game_Over = JOptionPane.showInputDialog("You Win!");
+         System.out.println("You Win!");
+         alreadyWon = true;}
+
+
+
+
+
+
+      }
+
+
+   public void mouseReleased() {
+      clickCounter ++;
+      if(clickCounter == 1) {
+         Location loc = display.gridLocationAt(mouseX, mouseY);
+         startRow = loc.getRow();
+         startCol = loc.getCol();
+      }else if(clickCounter == 2){
+         Location loc = display.gridLocationAt(mouseX, mouseY);
+         int targetRow = loc.getRow();
+         int targetCol = loc.getCol();
+         game.move(startRow,startCol, targetRow, targetCol);
+         clickCounter=0;
+      }
+   }
+
+
+
+
+   // main method to launch this Processing sketch from computer
+   public static void main(String[] args) {
+      PApplet.main(new String[] { "RunGraphicalGame" });
+   }
+}
