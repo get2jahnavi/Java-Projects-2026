@@ -1,0 +1,278 @@
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+import processing.core.PApplet;
+import processing.core.PImage;
+
+
+import java.util.ArrayList;
+
+
+public class Main extends PApplet {
+
+
+   ArrayList<Pac_man> foodList;
+   //Pacman positions
+   int pacX = 570;
+   int pacY = 570;
+   int pacSize = 50;
+   //ghost Positions
+   int ghost1X, ghost1Y;
+   int ghost2X, ghost2Y;
+   int ghostSize = 40;
+   int ghost1XSpeed = 4;
+   int ghost1YSpeed = 4;
+   int ghost2XSpeed = -4;
+   int ghost2YSpeed = 4;
+   int pacSpeed = 5;
+   int score = 0;
+   int lives = 3;
+   boolean pacAlive = true;
+   // import images
+   PImage pacman;
+   PImage bg;
+   Minim loader;
+   AudioPlayer song;
+
+
+
+
+
+
+   public void settings() {
+       size(600, 600);
+   }
+
+
+   public void setup() {
+       //food
+
+
+       foodList = new ArrayList<>();
+
+
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 570, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 500, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 430, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 360, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 290, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 220, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 150, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 80, 12, color(255)));
+       }
+       for (int x = 10; x < 600; x += 40) {
+           foodList.add(new Pac_man(x, 10, 12, color(255)));
+       }
+       //ghosts
+       ghost1X = (int) (Math.random() * (570 - ghostSize));
+       ghost1Y = (int) (Math.random() * (570 - ghostSize));
+       ghost2X = (int) (Math.random() * (570 - ghostSize));
+       ghost2Y = (int) (Math.random() * (570 - ghostSize));
+
+
+       //images
+       pacman = loadImage("pacman.png");
+       pacman.resize(100,60);
+       bg = loadImage("Background.png");
+       bg.resize(600,600);
+
+
+
+
+       loader = new Minim(this);
+       song= loader.loadFile("pacmanmusic.mp3");
+       song.loop();
+
+
+   }
+
+
+   public void draw() {
+       image(bg, 0, 0);
+
+
+       if (keyPressed && key == CODED) {
+           if (keyCode == UP) {
+               pacY -= pacSpeed;
+           };
+           if (keyCode == DOWN) {
+               pacY += pacSpeed;
+           }
+           if (keyCode == LEFT) {
+               pacX -= pacSpeed;
+           }
+           if (keyCode == RIGHT){
+               pacX += pacSpeed;
+           }
+       }
+
+
+       for (int i = 0; i < foodList.size(); i++) {
+           Pac_man f = foodList.get(i);
+           fill(f.color);
+           ellipse(f.x, f.y, f.size, f.size);
+       }
+
+
+
+
+
+
+       //pac image pasted in
+       image(pacman, pacX, pacY, pacSize, pacSize);
+
+
+       if (pacX > 600 - pacSize) {
+           pacX = 600 - pacSize;
+       }
+       if (pacX < 0) {
+           pacX = 0;
+       }
+       if (pacY > 600 - pacSize) {
+           pacY = 600 - pacSize;
+       }
+       if (pacY < 0) {
+           pacY = 0;
+       }
+
+
+
+
+
+
+
+
+
+
+       // Make the Ghosts move/bounce
+       fill(255, 0, 0);
+       ellipse(ghost1X, ghost1Y, ghostSize, ghostSize);
+
+
+       // Ghost 1
+       fill(255, 0, 0);
+       ellipse(ghost1X, ghost1Y, ghostSize, ghostSize);
+       ghost1X += ghost1XSpeed;
+       ghost1Y += ghost1YSpeed;
+       if (ghost1X + ghostSize/2 > 600 || ghost1X - ghostSize/2 < 0) {
+           ghost1XSpeed = -ghost1XSpeed;
+       }
+       if (ghost1Y + ghostSize/2 > 600 || ghost1Y - ghostSize/2 < 0) {
+           ghost1YSpeed = -ghost1YSpeed;
+       }
+
+
+// Ghost 2
+       fill(255,0,0);
+       ellipse(ghost2X, ghost2Y, ghostSize, ghostSize);
+       ghost2X += ghost2XSpeed;
+       ghost2Y += ghost2YSpeed;
+       if (ghost2X + ghostSize/2 > 600 || ghost2X - ghostSize/2 < 0) {
+           ghost2XSpeed = -ghost2XSpeed;
+       }
+       if (ghost2Y + ghostSize/2 > 600 || ghost2Y - ghostSize/2 < 0) {
+           ghost2YSpeed = -ghost2YSpeed;
+       }
+
+
+
+
+       // food collison to make the food dissapear and score go up by 10 on contact
+       for (int i = foodList.size()-1; i >= 0; i--) {
+
+
+           Pac_man f = foodList.get(i);
+
+
+           fill(f.color);
+           ellipse(f.x, f.y, f.size, f.size);
+
+
+
+
+           if (dist(pacX + pacSize/2, pacY + pacSize/2, f.x, f.y) < pacSize/2 + f.size/2) {
+               foodList.remove(i);
+               score += 10;
+
+
+           }
+       }
+       fill(180);
+       textSize(15);
+       text("Score: " + score, 20, 20);
+
+
+       fill(180);
+       textSize(15);
+       text("Lives: " + lives, 20, 40);
+
+
+       fill(180);
+       textSize(20);
+       text("Arcade PacMan ",200, 30);
+
+
+       if (pacAlive) {
+           if (dist(pacX + pacSize/2, pacY + pacSize/2, ghost1X, ghost1Y) < pacSize/2 + ghostSize/2 ||
+                   dist(pacX + pacSize/2, pacY + pacSize/2, ghost2X, ghost2Y) < pacSize/2 + ghostSize/2) {
+
+
+
+
+               lives--;
+
+
+               // Reset ghosts to bottom middle
+               ghost1X = width / 2;
+               ghost1Y = height - ghostSize;
+
+
+               ghost2X = width / 2;
+               ghost2Y = height - ghostSize - 50;
+
+
+               pacAlive = false;
+           }
+       } else {
+           if (dist(pacX + pacSize/2, pacY + pacSize/2, ghost1X, ghost1Y) > pacSize/2 + ghostSize/2 &&
+                   dist(pacX + pacSize/2, pacY + pacSize/2, ghost2X, ghost2Y) > pacSize/2 + ghostSize/2) {
+
+
+               pacAlive = true;
+           }
+       }
+
+
+       if (lives <= 0) {
+           // Game Over screen
+           background(0);
+           fill(255, 0, 0);
+           textSize(50);
+           textAlign(CENTER, CENTER);
+           text("GAME OVER", width / 2, height / 2);
+       }
+
+
+   }
+
+
+
+
+   public static void main(String[] args){
+       PApplet.main("Main");
+   }
+}
