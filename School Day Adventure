@@ -1,6 +1,7 @@
-This game is about a student going to high school and the user makes the decisions for the student.
-This Project uses JOPtionPane because all of the questions will be multiple choice and we need need a pop ups. 
-javax.swing.*;
+/** This game is about a student going to high school and the user makes the decisions for the student.
+*   This Project uses JOPtionPane because all of the questions will be multiple choice and we need need a pop ups. 
+*   javax.swing.*;
+**/
 
 
 public class exercises {
