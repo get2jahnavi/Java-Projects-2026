@@ -1,0 +1,238 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+
+public class GameBoard {
+   private int[][] grid;// the grid that stores the pieces
+   //list to hold puzzle pieces
+   //private ArrayList<PuzzlePiece> pieces= new ArrayList<>();
+
+
+   public GameBoard(int height, int width) {
+      grid = new int[height][width];
+      int num =1;
+      //like pawns in chess, randomly place numbers 1-24 on the grid
+
+
+      int imagePlaced = 0;
+      while (imagePlaced < 24) {
+      int r = (int) (Math.random() * 5);
+         int c = (int) (Math.random() * 5);
+         if (grid[r][c] == 0) {
+         grid[r][c] = imagePlaced + 1;
+            imagePlaced++;
+         }
+      }
+//debug thingy
+//     for (int row = 0; row < grid.length; row++) {
+//        for (int col = 0; col < grid[0].length; col++) {
+//           grid[row][col] = num;
+//           num++;
+//        }
+//     }
+
+
+   /*grid[r][c]=1;
+   grid[r][c]=2;
+   grid[r][c]=3;
+   grid[r][c]=4;
+   grid[r][c]=5;
+   grid[r][c]=6;
+   grid[r][c]=7;
+   grid[r][c]=8;
+   grid[r][c]=9;
+   grid[r][c]=10;
+   grid[r][c]=11;
+   grid[r][c]=12;
+   grid[r][c]=13;
+   grid[r][c]=14;
+   grid[r][c]=15;
+   grid[r][c]=16;
+   grid[r][c]=17;
+   grid[r][c]=18;
+   grid[r][c]=19;
+   grid[r][c]=20;
+   grid[r][c]=21;
+   grid[r][c]=22;
+   grid[r][c]=23;
+   grid[r][c]=24;*/
+   }
+
+
+   //grid[4][4]=0;
+   public boolean isInGrid(int row, int col) {
+
+
+      return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
+   }
+
+
+
+
+   public boolean move(int startRow, int startCol, int targetRow, int targetCol) {
+      if (isInGrid(startRow, startCol) && isInGrid(targetRow, targetCol)) {
+         int startLoc = grid[startRow][startCol];
+         int targetLoc = grid[targetRow][targetCol];
+         grid[targetRow][targetCol] = startLoc;
+         grid[startRow][startCol]= targetLoc;
+
+
+         System.out.println("DEBUGGING: You clicked in row: " + startRow + " , col: " + startCol +
+               " and " + " row " + targetRow + " ,col " + targetCol);
+
+
+      }
+      return true;
+   }
+
+
+   public int[][] getGrid() {
+      return grid;
+   }
+
+
+   public boolean isGameOver() {
+      for (int row = 0; row < grid.length; row++) {
+         for (int col = 0; col < grid[0].length; col++) {
+            if (grid[row][col] == 5 * row + (col + 1)) {
+
+
+
+
+/*if(grid[0][0]==1 && grid[0][1]==2 && grid[0][2]=3 && grid[0][3]=4 && grid [0][4]=5 && grid[1][0]=6 && grid[1][1]=7
+&& grid[1][2]=8 && grid[1][3]=9 && grid [1][4]=10 && grid[2][0]=11 && grid[2][1]=12 && grid[2][2]=13 && grid[2][3]=14
+&& grid [2][4]=15 && grid[4][4] = 24 && grid[4][3] =23  && grid[4][2]=22 && grid[4][1]=21)&& grid[4][0]=20
+&& grid[3][4]=19 && grid[3][3]=18 && grid[3][2]=17 && grid[3][1]=16){*/
+               return true;
+            }
+
+
+            /*** YOU COMPLETE THIS METHOD ***/
+
+
+            return false;
+         }
+      }
+      return false;
+
+
+
+
+   }
+}
+
+
+import processing.core.*;
+import javax.swing.*;
+public class RunGraphicalGame extends PApplet {
+   GameBoard game;
+   Display display;
+   int clickCounter =0;
+   int startRow, startCol;
+   private boolean alreadyWon;
+   String game_Over;
+
+
+
+
+   public void settings() {
+      size(640, 550);
+   }
+
+
+   public void setup() {
+      // Create a game object
+      game = new GameBoard(5, 5);
+
+
+      // Create the display
+      display = new Display(this, 10, 10, 400, 400);
+      boolean alreadyWon = false;
+
+
+      // You can use images instead if you'd like.
+      display.setImage(1, "001.jpg");
+      display.setImage(2, "002.jpg");
+      display.setImage(3, "003.jpg");
+      display.setImage(4,"004.jpg");
+      display.setImage(5, "005.jpg");
+      display.setImage(6, "006.jpg");
+      display.setImage(7, "007.jpg");
+      display.setImage(8, "008.jpg");
+      display.setImage(9,"009.jpg");
+      display.setImage(10, "010.jpg");
+      display.setImage(11, "011.jpg");
+      display.setImage(12, "012.jpg");
+      display.setImage(13,"013.jpg");
+      display.setImage(14, "014.jpg");
+      display.setImage(15, "015.jpg");
+      display.setImage(16, "016.jpg");
+      display.setImage(17, "017.jpg");
+      display.setImage(18,"018.jpg");
+      display.setImage(19, "019.jpg");
+      display.setImage(20, "020.jpg");
+      display.setImage(21, "021.jpg");
+      display.setImage(22, "022.jpg");
+      display.setImage(23,"023.jpg");
+      display.setImage(24, "024.jpg");
+
+
+
+
+
+
+
+
+
+
+
+
+      display.initializeWithGame(game);
+   }
+
+
+   @Override
+   public void draw() {
+      background(200);
+      display.drawGrid(game.getGrid());
+      //display.setImage();
+      if (game.isGameOver() && !alreadyWon) {
+         game_Over = JOptionPane.showInputDialog("You Win!");
+         System.out.println("You Win!");
+         alreadyWon = true;}
+
+
+
+
+
+
+      }
+
+
+   public void mouseReleased() {
+      clickCounter ++;
+      if(clickCounter == 1) {
+         Location loc = display.gridLocationAt(mouseX, mouseY);
+         startRow = loc.getRow();
+         startCol = loc.getCol();
+      }else if(clickCounter == 2){
+         Location loc = display.gridLocationAt(mouseX, mouseY);
+         int targetRow = loc.getRow();
+         int targetCol = loc.getCol();
+         game.move(startRow,startCol, targetRow, targetCol);
+         clickCounter=0;
+      }
+   }
+
+
+
+
+   // main method to launch this Processing sketch from computer
+   public static void main(String[] args) {
+      PApplet.main(new String[] { "RunGraphicalGame" });
+   }
+}
+
+
+
