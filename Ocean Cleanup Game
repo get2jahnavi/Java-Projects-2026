@@ -1,0 +1,387 @@
+/** The program will start with a popup question asking if they want a cup of coffee.
+*  This represents the overconsumption and single use plastic part.
+*  Based on if the user presses yes or no it will show a certain screen.
+*  If the user presses yes it will show a factory pumping out smoke fumes and oil and will say “You lose! :(”.
+*  If the user presses yes it will show a picture of the ocean will a lot of litter and animals.
+*  The ocean will be like a grid where you click on the litter and move it to the box that represents recycling and trash.
+**/
+import processing.core.PApplet;
+import javax.swing.*;
+import processing.core.PImage;
+import java.util.ArrayList;
+
+
+public class Main extends PApplet {
+
+
+   ArrayList<Trash> trashList = new ArrayList<>();
+   ArrayList<Trashy> trashyList = new ArrayList<>();
+   ArrayList<Trash1> trash1List = new ArrayList<>();
+
+
+   PImage[] gifList;
+   PImage photo1;
+   PImage gameoverImage;
+
+
+   int choice;
+   int display;
+   int gameover = 0;
+
+
+   String a1 = "Yes";
+   String b1 = "No";
+
+
+   int selectedType = 0;
+   int selectedIndex = -1;
+
+
+   public void settings() {
+       size(600, 600);
+   }
+
+
+   public void setup() {
+
+
+       gifList = new PImage[]{
+               loadImage("pollution1.gif"),
+               loadImage("pollution2.gif"),
+               loadImage("pollution3.gif"),
+               loadImage("pollution4.gif")
+       };
+
+
+       photo1 = loadImage("img_1.png");
+
+
+       // Add your happy ocean image to the data folder.
+       // You can rename this if your image has a different file name.
+       gameoverImage = loadImage("happy_ocean.png");
+
+
+       for (int i = 0; i < 6; i++) {
+           trashList.add(new Trash((int) random(0, 550), (int) random(0, 450), 30, 30));
+       }
+
+
+       for (int i = 0; i < 10; i++) {
+           trash1List.add(new Trash1((int) random(0, 550), (int) random(0, 450),
+                   (int) random(20, 50), (int) random(10, 40)));
+       }
+
+
+       for (int i = 0; i < 6; i++) {
+           trashyList.add(new Trashy((int) random(0, 550), (int) random(0, 450), 25));
+       }
+
+
+       String[] buttons = {a1, b1};
+       choice = JOptionPane.showOptionDialog(
+               null,
+               "Do you want a cup of coffee?",
+               "Choose one",
+               JOptionPane.DEFAULT_OPTION,
+               0,
+               null,
+               buttons,
+               null
+       );
+   }
+
+
+   public void draw() {
+       background(200);
+
+
+       if (choice == 0) {
+           if (display == 0) {
+               image(gifList[frameCount % 4], 0, 0, 600, 600);
+           }
+           else if (display == 1) {
+               background(255);
+               fill(0);
+               textSize(18);
+               text("Factories that produce plastic cause pollution", 0, 100);
+               text("and the plastic that it makes goes in", 0, 130);
+               text("the oceans. So the plastic cup you use when you", 0, 160);
+               text("buy coffee from some big corporation", 0, 190);
+               text("contributes to climate change.", 0, 220);
+           }
+       }
+
+
+       if (choice == 1) {
+           if (display == 0) {
+               background(0, 100, 200);
+               fill(255);
+               textSize(25);
+               text("Ocean Screen", 200, 300);
+           }
+           else if (display == 1) {
+               background(255);
+               fill(0);
+               textSize(18);
+               text("Plastic pollution enters oceans", 50, 200);
+               text("Click to continue...", 50, 250);
+           }
+           else if (display == 2) {
+
+
+               if (gameover == 0) {
+                   image(photo1, 0, 0, 600, 600);
+
+
+                   // key box
+                   fill(255);
+                   rect(10, 10, 220, 110);
+
+
+                   fill(0);
+                   textSize(16);
+                   text("Key:", 20, 30);
+
+
+                   fill(0, 0, 255);
+                   rect(20, 45, 20, 20);
+                   fill(0);
+                   text("Recycle item", 50, 62);
+
+
+                   fill(0, 255, 0);
+                   rect(20, 70, 20, 20);
+                   fill(0);
+                   text("Trash item", 50, 87);
+
+
+                   fill(150);
+                   rect(20, 95, 20, 12);
+                   fill(0);
+                   text("Compost item", 50, 107);
+
+
+                   // recycle items
+                   fill(0, 0, 255);
+                   for (Trash t : trashList) {
+                       rect(t.x, t.y, t.w, t.h);
+                   }
+
+
+                   // trash items
+                   fill(0, 255, 0);
+                   for (Trashy t : trashyList) {
+                       ellipse(t.x, t.y, t.size, t.size);
+                   }
+
+
+                   // compost items
+                   fill(150);
+                   for (Trash1 t : trash1List) {
+                       ellipse(t.x, t.y, t.w, t.h);
+                   }
+
+
+                   // bins
+                   fill(0, 0, 255);
+                   rect(0, 500, 200, 100);
+                   fill(255);
+                   textSize(22);
+                   text("Recycle", 55, 555);
+
+
+                   fill(0, 255, 0);
+                   rect(200, 500, 200, 100);
+                   fill(0);
+                   text("Trash", 270, 555);
+
+
+                   fill(150);
+                   rect(400, 500, 200, 100);
+                   fill(255);
+                   text("Compost", 455, 555);
+               }
+
+
+               else if (gameover == 1) {
+                   image(gameoverImage, 0, 0, 600, 600);
+
+
+                   fill(255, 255, 255, 220);
+                   rect(20, 20, 560, 560);
+
+
+                   fill(0);
+                   textSize(34);
+                   text("YOU WON!!!", 190, 70);
+
+
+                   textSize(16);
+                   text("By cleaning the ocean, you saved over 1 million sea birds", 30, 120);
+                   text("and 100,000 marine mammals.", 30, 145);
+
+
+                   text("Every year, 90% of seabirds fall ill due to eating plastic,", 30, 195);
+                   text("and many animals die by mistaking plastic or trash for food.", 30, 220);
+
+
+                   text("In the ocean, there are 75 to 199 million tons of plastic waste.", 30, 270);
+
+
+                   text("Cleaning up all of the waste sounds unrealistic,", 30, 320);
+                   text("but if we recycle properly and cut the usage of plastic bags,", 30, 345);
+                   text("this problem can stop.", 30, 370);
+               }
+           }
+       }
+   }
+
+
+   public void mouseReleased() {
+
+
+       if (choice == 0) {
+           if (display == 0) {
+               display = 1;
+           }
+           else if (display == 1) {
+               display = 0;
+
+
+               String[] buttons = {a1, b1};
+               choice = JOptionPane.showOptionDialog(
+                       null,
+                       "Do you want a cup of coffee?",
+                       "Choose one",
+                       JOptionPane.DEFAULT_OPTION,
+                       0,
+                       null,
+                       buttons,
+                       null
+               );
+           }
+       }
+
+
+       if (choice == 1) {
+           if (display == 0) {
+               display = 1;
+           }
+           else if (display == 1) {
+               display = 2;
+           }
+           else if (display == 2) {
+
+
+               if (gameover == 1) {
+                   return;
+               }
+
+
+               // SECOND CLICK: clicked a bin after selecting item
+               if (selectedType != 0) {
+
+
+                   // recycle bin
+                   if (mouseX >= 0 && mouseX <= 200 && mouseY >= 500 && mouseY <= 600) {
+                       if (selectedType == 1) {
+                           trashList.remove(selectedIndex);
+
+
+                           if (trashList.size() == 0 && trashyList.size() == 0 && trash1List.size() == 0) {
+                               gameover = 1;
+                           }
+                       }
+
+
+                       selectedType = 0;
+                       selectedIndex = -1;
+                       return;
+                   }
+
+
+                   // trash bin
+                   if (mouseX >= 200 && mouseX <= 400 && mouseY >= 500 && mouseY <= 600) {
+                       if (selectedType == 2) {
+                           trashyList.remove(selectedIndex);
+
+
+                           if (trashList.size() == 0 && trashyList.size() == 0 && trash1List.size() == 0) {
+                               gameover = 1;
+                           }
+                       }
+
+
+                       selectedType = 0;
+                       selectedIndex = -1;
+                       return;
+                   }
+
+
+                   // compost bin
+                   if (mouseX >= 400 && mouseX <= 600 && mouseY >= 500 && mouseY <= 600) {
+                       if (selectedType == 3) {
+                           trash1List.remove(selectedIndex);
+
+
+                           if (trashList.size() == 0 && trashyList.size() == 0 && trash1List.size() == 0) {
+                               gameover = 1;
+                           }
+                       }
+
+
+                       selectedType = 0;
+                       selectedIndex = -1;
+                       return;
+                   }
+               }
+
+
+               // FIRST CLICK: select recycle item
+               for (int i = trashList.size() - 1; i >= 0; i--) {
+                   Trash t = trashList.get(i);
+
+
+                   if (mouseX >= t.x && mouseX <= t.x + t.w &&
+                           mouseY >= t.y && mouseY <= t.y + t.h) {
+                       selectedType = 1;
+                       selectedIndex = i;
+                       return;
+                   }
+               }
+
+
+               // FIRST CLICK: select trash item
+               for (int i = trashyList.size() - 1; i >= 0; i--) {
+                   Trashy t = trashyList.get(i);
+
+
+                   if (dist(mouseX, mouseY, t.x, t.y) < t.size / 2) {
+                       selectedType = 2;
+                       selectedIndex = i;
+                       return;
+                   }
+               }
+
+
+               // FIRST CLICK: select compost item
+               for (int i = trash1List.size() - 1; i >= 0; i--) {
+                   Trash1 t = trash1List.get(i);
+
+
+                   if (mouseX >= t.x - t.w / 2 && mouseX <= t.x + t.w / 2 &&
+                           mouseY >= t.y - t.h / 2 && mouseY <= t.y + t.h / 2) {
+                       selectedType = 3;
+                       selectedIndex = i;
+                       return;
+                   }
+               }
+           }
+       }
+   }
+
+
+   public static void main(String[] args) {
+       PApplet.main("Main");
+   }
+}
