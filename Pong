@@ -1,0 +1,164 @@
+//Objective:Don’t let the ball hit the sides of the screen.  Use the pong handles to stop the ball from hitting the sides
+
+import processing.core.PApplet;
+import processing.core.PImage;
+public class Main extends PApplet {
+   PImage background;
+
+
+
+
+   float x1, y1, x2, y2, x3, eSize, ySpeed, xSpeed, rW, rH, score, lifeSpan;
+int min,max;
+
+
+
+
+
+
+   public void settings() {
+       size(600, 600);
+   }
+
+
+
+
+   public void setup() {
+       background = loadImage("background.png");
+       x1 = 300;
+       y1 = 300;
+       x2 = 25;
+       y2 = 150;
+       x3 = 560;
+       eSize = 15;
+       rH = 250;
+       rW = 20;
+       xSpeed = 5;
+       ySpeed = 5;
+       score = 0;
+       lifeSpan = 3;
+       min = -50;
+       max = 50;
+
+
+
+
+
+
+
+
+       background.resize(600, 600);
+   }
+
+
+
+
+   public void draw() {
+       image(background, 0, 0);
+       fill(255, 175, 175);
+       ellipse(x1, y1, eSize*2, eSize*2);
+       fill(128, 0, 128);
+       rect(x2, y2, rW, rH);
+       x1 = x1 + xSpeed;
+       fill(128, 0, 128);
+       rect(x3, mouseY, rW, rH);
+       fill(255);
+
+
+       if (x1 > 600) {
+           x1 = 300;
+       }
+       if (y1 + eSize / 2 >= mouseY) {
+           ySpeed = -ySpeed;
+       }
+       if (y2 + eSize > y2 && y2 + eSize <= y2 + rH) {
+           ySpeed = -ySpeed;
+       }
+       text("score:" + score, 300, 10);
+       text("lives:" + lifeSpan, 300, 20);
+       //display lifespan and score
+       if (x2 + rW >= x1 - eSize) {
+          if (y2 + eSize >= y2 && y2 - eSize <= y2 + rH) {
+             xSpeed=-xSpeed;
+
+
+           }
+       }
+
+
+       if (x3 <= x1 + eSize) {
+           if (y1 + eSize > mouseY && y1 + eSize <= mouseY + rH) {
+               xSpeed = -xSpeed;
+               int randomInRange = min + (int)(Math.random() * ((max - min) + 1));
+
+
+               y1=y1+randomInRange;
+           }
+       }
+       if(mouseY+rH>600 || mouseY<0){
+          mouseY=300;
+      }
+
+
+       //keep
+       if (x2 + rW >= x1 - eSize / 2) {
+           xSpeed = -xSpeed;
+       }
+       if (x1 <= x2) {
+           score = score + 1000;
+       }
+
+
+
+
+
+
+
+
+       if (x1 >= x3) {
+           lifeSpan = lifeSpan - 1;
+       }
+       if (y2 + eSize / 2 >= y2 && y2 - eSize / 2 <= y2 + rH) {
+           ySpeed=-ySpeed;
+
+
+
+
+       }
+
+
+
+
+
+
+//
+
+
+
+
+       if (y1 + eSize / 2 <= mouseY && y1 - eSize / 2 <= mouseY + rH) {
+           xSpeed = -xSpeed;
+       }
+
+
+
+
+//
+
+
+
+
+
+
+
+
+   }
+
+
+
+
+   //
+   public static void main (String[]args){
+       PApplet.main("Main");
+   }
+}
