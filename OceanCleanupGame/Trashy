@@ -1,0 +1,10 @@
+public class Trashy {
+   int x, y, size;
+
+
+   public Trashy(int x, int y, int size) {
+       this.x = x;
+       this.y = y;
+       this.size = size;
+   }
+}
