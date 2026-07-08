@@ -1,0 +1,81 @@
+This game is about a student going to high school and the user makes the decisions for the student.
+This Project uses JOPtionPane because all of the questions will be multiple choice and we need need a pop ups. 
+javax.swing.*;
+
+
+public class exercises {
+   public static void main(String[] args) {
+       String a1, b1, a2, b2, a3, b3;
+       a1 = "Snooze";
+       a2 = "Skip Class";
+       a3 = "walk of shame";
+       b1 = "Get up now";
+       b2 = "Panic and cry";
+       b3 = "Write random answers";
+
+
+
+
+       String Welcome;
+       Welcome = JOptionPane.showInputDialog("Welcome click here to play a new game");
+       System.out.println(Welcome);
+       String[] buttons = {a1, b1};
+
+
+       int choice1 = JOptionPane.showOptionDialog(null, "Your alarm goes off" +
+               " at 7:30. Do you...?", null, JOptionPane.DEFAULT_OPTION, 0, null,
+               buttons, null);
+       if (choice1 == 0) {
+           String[] buttons0 = {a2, a3};
+           int choice2a = JOptionPane.showOptionDialog(null, "You arrived late" +
+                           " to first period, do you...?", null, JOptionPane.DEFAULT_OPTION,
+                   0, null, buttons0, null);
+           if (choice2a == 0) {
+               String[] buttons1 = {"Don't Care","Play Again" };
+               int choice3a;
+               do {
+                  choice3a = JOptionPane.showOptionDialog(null,"You had a really big test " +
+                                  "that day that was " + "worth 30% of your grade! Since you missed it you" +
+                                  " failed high " + "school.:<. Play Again?", null,
+                          JOptionPane.DEFAULT_OPTION, 0, null, buttons1, null);
+
+
+               }while (choice3a == 0);
+           } else {  //choice2a==1
+               String[] buttonsPopQuiz = {b2, b3};
+               int choice3b = JOptionPane.showOptionDialog(null,  "OH NO POP QUIZ!"
+                               + "Do you?"
+                       , null, JOptionPane.DEFAULT_OPTION, 0, null,
+                       buttonsPopQuiz, null);
+               if (choice3b == 0) {
+                   JOptionPane.showInputDialog("You get a zero and everyone laughs at you, you " +
+                           "fail high school try again?");
+               } else { //choice3b==1
+                   JOptionPane.showInputDialog("It's a miracle! You got perfect marks " +
+                           "and everyone wants to be your friend! You got Valedictorian, you" +
+                           " win at life! :))");
+               }
+           } //end of choice2a==1
+       } else { //choice1 == 1
+           String[] buttonsPopQuiz = {b2, b3};
+           int choice2b = JOptionPane.showOptionDialog(null, " You arrived just" +
+                           " in time but OH NO!Pop Quiz.Do you?"
+                   , null, JOptionPane.DEFAULT_OPTION, 0, null,
+                   buttonsPopQuiz, null);
+
+
+           if (choice2b == 0) {
+               JOptionPane.showInputDialog("The whole class points and laughs at you " +
+                       "for crying. Game Over");
+           } else {  //choice2b == 1
+               JOptionPane.showInputDialog("It's a miracle! You got perfect marks " +
+                       "and everyone wants to be your friend! You got Valedictorian, you" +
+                       " win at life! :))");
+           }
+
+
+       }
+
+
+   }
+}
