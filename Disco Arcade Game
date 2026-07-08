@@ -1,2 +1,76 @@
-This is a code for A box that has Leds on top of a certain color, and you press the corresponding button that matches the color of the Led.
-You get a certain score to win and once you win the rgb fancy disco light(mini RGB LED) lights up to show you won
+/** This is a code for A box that has Leds on top of a certain color, and you press the corresponding button that matches the color of the Led.
+*  You get a certain score to win and once you win the rgb fancy disco light(mini RGB LED) lights up to show you won
+**/
+#include <LedControl.h>
+LedControl lc = LedControl(8, 7, 12, 1);
+
+int BUTTON1 = A0; // red
+int BUTTON2 = A1; // green
+int BUTTON3 = A2; // blue
+int BUTTON4 = A3; // yellow
+
+int LED1 = 3;
+int LED2 = 13;
+int LED3 = 5;
+int LED4 = 10;
+int COMMON = 4;
+
+int score = 0;
+int randomColor = 0;
+
+void setup() {
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+  pinMode(COMMON, OUTPUT);
+
+  pinMode(BUTTON1, INPUT);
+  pinMode(BUTTON2, INPUT);
+  pinMode(BUTTON3, INPUT);
+  pinMode(BUTTON4, INPUT);
+
+  lc.shutdown(0, false);
+  lc.setIntensity(0, 8);
+  lc.clearDisplay(0);
+}
+
+void loop() {
+
+  // pick random color
+  randomColor = random(1,5);
+
+  // turn off all LEDs
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+  digitalWrite(LED4, LOW);
+  digitalWrite(COMMON, HIGH);
+
+  // turn ON one LED
+  if(randomColor == 1) digitalWrite(LED1, HIGH);
+  if(randomColor == 2) digitalWrite(LED2, HIGH);
+  if(randomColor == 3) digitalWrite(LED3, HIGH);
+  if(randomColor == 4) digitalWrite(LED4, HIGH);
+
+  delay(600);
+
+  // check buttons (ONLY increase score if correct)
+  if(digitalRead(BUTTON1) == HIGH && randomColor == 1) score++;
+  if(digitalRead(BUTTON2) == HIGH && randomColor == 2) score++;
+  if(digitalRead(BUTTON3) == HIGH && randomColor == 3) score++;
+  if(digitalRead(BUTTON4) == HIGH && randomColor == 4) score++;
+
+  // turn off LEDs
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+  digitalWrite(LED4, LOW);
+
+  // update display
+  lc.clearDisplay(0);
+  lc.setDigit(0, 0, score % 10, false);
+  lc.setDigit(0, 1, score / 10, false);
+}
+
+
